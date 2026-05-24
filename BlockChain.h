@@ -19,7 +19,9 @@ typedef unsigned int (*updateFunction)(unsigned int);
  *
 */
 struct BlockChain {
-    // TODO: Implement 
+    // TODO: Implement
+    Transaction t;
+    BlockChain* next;
 };
 
 /**
