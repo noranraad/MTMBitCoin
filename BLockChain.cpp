@@ -90,12 +90,12 @@ void BlockChainDump(const BlockChain& blockChain, ofstream& file) {
         Block *curr = blockChain.head;
         int cnt = 1;
         while (curr != nullptr) {
-                file << "BlockChain Info:"
-                << cnt
-                << "Sender Name: " << curr->t.sender
-                << "Receiver Name: " << curr->t.receiver
-                << "Transaction Value: " << curr->t.value
-                << "Transaction timestamp: " << curr->timestamp;
+                file << "BlockChain Info:" << std::endl
+                << cnt << std::endl
+                << "Sender Name: " << curr->t.sender << std::endl
+                << "Receiver Name: " << curr->t.receiver << std::endl
+                << "Transaction Value: " << curr->t.value << std::endl
+                << "Transaction timestamp: " << curr->timestamp << std::endl;
 
                 curr = curr->next;
                 cnt++;
@@ -103,11 +103,19 @@ void BlockChainDump(const BlockChain& blockChain, ofstream& file) {
 }
 
 void BlockChainDumpHashed(const BlockChain& blockChain, ofstream& file) {
-        
+        Block *curr = blockChain.head;
+        while (curr != nullptr)
+                file << TransactionHashedMessage(curr->t) << std::endl;
 }
 
 bool BlockChainVerifyFile(const BlockChain& blockChain, std::ifstream& file) {
-
+        Block *curr = blockChain.head;
+        string hashedCheck;
+        while (curr != nullptr) {
+                getline(file,hashedCheck);
+                if (TransactionHashedMessage(curr->t) != hashedCheck) return false;
+        }
+        return true;
 }
 
 void BlockChainCompress(BlockChain& blockChain) {
