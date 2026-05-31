@@ -4,6 +4,7 @@
 #include "Utilities.h"
 #include "Transaction.h"
 #include "BlockChain.h"
+#include "iostream"
 
 int main(int argc, char *argv[]) {
     if (argc != 4) {
@@ -22,11 +23,37 @@ int main(int argc, char *argv[]) {
         BlockChainDestroy(b);
     }
 
-    if (op == "hash") {
-        
+    else if (op == "hash") {
+        ifstream sourceFile(argv[2]);
+        ofstream targetFile(argv[3]);
+
+        BlockChain b = BlockChainLoad(sourceFile);
+        BlockChainDumpHashed(b,targetFile);
+        BlockChainDestroy(b);
     }
 
-    if (op == "compress"){}
+    else if (op == "compress") {
+        ifstream sourceFile(argv[2]);
+        ofstream targetFile(argv[3]);
 
-    if (op == "verify"){}
+        BlockChain b = BlockChainLoad(sourceFile);
+        BlockChainCompress(b);
+        BlockChainDump(b,targetFile);
+        BlockChainDestroy(b);
+    }
+
+    else if (op == "verify") {
+        ifstream sourceFile(argv[2]);
+        ifstream targetFile(argv[3]);
+
+        BlockChain b = BlockChainLoad(sourceFile);
+
+        if (!BlockChainVerifyFile(b,targetFile))
+            std::cerr << "Verification false";
+        std::cout << "Verification passed";
+
+        BlockChainDestroy(b);
+    }
+
+    return 0;
 }
