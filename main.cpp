@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc != 4) {
-        getErrorMessage();
+        std::cerr << getErrorMessage() << std::endl;
         return 0;
     }
 
@@ -48,11 +48,17 @@ int main(int argc, char *argv[]) {
 
         BlockChain b = BlockChainLoad(sourceFile);
 
-        if (!BlockChainVerifyFile(b,targetFile))
-            std::cerr << "Verification false";
-        std::cout << "Verification passed";
+        if (!BlockChainVerifyFile(b, targetFile)) {
+            std::cout << "Verification failed" << std::endl;
+        } else {
+            std::cout << "Verification passed" << std::endl;
+        }
 
         BlockChainDestroy(b);
+    }
+
+    else {
+        std::cerr << getErrorMessage() << std::endl;
     }
 
     return 0;
